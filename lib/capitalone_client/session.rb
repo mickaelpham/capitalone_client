@@ -1,9 +1,12 @@
 module CapitalOneClient
-  class Session
-    def initialize(user_id, authentication_token, api_token)
-      @user_id              = user_id
-      @authentication_token = authentication_token
-      @api_token            = api_token
+  class Session < Support::BaseSession
+    base_url  'https://api.levelmoney.com'
+    base_path '/api/v2/hackathon'
+
+    # Accounts
+    # POST https://api.levelmoney.com/api/v2/hackathon/get-accounts
+    def accounts
+      fetch :post, '/get-accounts'
     end
   end
 end
