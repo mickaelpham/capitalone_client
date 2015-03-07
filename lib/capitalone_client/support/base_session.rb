@@ -3,7 +3,7 @@ module CapitalOneClient
     class BaseSession
       EXPECTED_TYPES = %w{ accounts transactions days transaction-ids }
 
-      def initialize(user_id, authentication_token, api_token)
+      def initialize(user_id = nil, authentication_token = nil, api_token = nil)
         @user_id              = user_id.to_i
         @authentication_token = authentication_token
         @api_token            = api_token

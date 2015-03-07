@@ -15,4 +15,8 @@ module CapitalOneClient
   def self.session(user_id:, authentication_token:, api_token:)
     Session.new(user_id, authentication_token, api_token)
   end
+
+  def self.login(email:, password:)
+    Session.new.login(email: email, password: password)
+  end
 end
