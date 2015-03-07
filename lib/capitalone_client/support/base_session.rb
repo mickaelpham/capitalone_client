@@ -4,7 +4,7 @@ module CapitalOneClient
       EXPECTED_TYPES = %w{ accounts transactions days transaction-ids }
 
       def initialize(user_id, authentication_token, api_token)
-        @user_id              = user_id
+        @user_id              = user_id.to_i
         @authentication_token = authentication_token
         @api_token            = api_token
       end

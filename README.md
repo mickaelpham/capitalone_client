@@ -6,23 +6,47 @@ Ruby client for the Capital One API provided during the
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile (assuming you cloned the repository
+in the same directory as your working project):
 
 ```ruby
-gem 'capitalone_client'
+gem 'capitalone_client', path: '../capitalone_client'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install capitalone_client
-
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'capitalone_client'
+
+# prepare the credentials to be used
+credentials = {
+  user_id:              'USER_ID',
+  authentication_token: 'AUTH_TOKEN',
+  api_token:            'API_TOKEN'
+}
+
+# get a client session
+session = CapitalOneClient.session(credentials)
+
+# list accounts
+accounts = session.accounts
+
+# list transactions
+transactions = session.transactions
+
+# find the projected transactions for a given month
+projected = session.projected_transactions(month: 'MONTH', year: 'YEAR')
+
+# find similar transactions
+similar = session.similar_transactions(['TRANSACTION_IDS'])
+
+# find the daily balances for this user
+balances = session.balances
+```
 
 ## Contributing
 

@@ -17,7 +17,7 @@ module CapitalOneClient
 
     # POST https://api.levelmoney.com/api/v2/hackathon/projected-transactions-for-month
     def projected_transactions(month:, year:)
-      data = { month: month, year: year }
+      data = { month: month.to_i, year: year.to_i }
       fetch :post, '/projected-transactions-for-month', data: data
     end
 
