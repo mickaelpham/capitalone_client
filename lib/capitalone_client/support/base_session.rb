@@ -1,6 +1,8 @@
 module CapitalOneClient
   module Support
     class BaseSession
+      EXPECTED_TYPES = %w{ accounts transactions days transaction-ids }
+
       def initialize(user_id, authentication_token, api_token)
         @user_id              = user_id
         @authentication_token = authentication_token
@@ -16,9 +18,9 @@ module CapitalOneClient
       end
 
       def fetch(method, path, data: nil, query: nil, &block)
-        response = request(method, path, data: data, query: query)
+        response     = request(method, path, data: data, query: query)
         status, data = response.status, response.body
-        resource = record_collection?(data) ? data.records : data
+        resource     = record_collection?(data) ? record_collection(data) : data
         block_given? ? block.call(resource, status, response) : resource
       end
 
@@ -46,7 +48,12 @@ module CapitalOneClient
       private
 
       def record_collection?(data)
-        data.respond_to?(:keys) && data.keys.sort == %w(records total)
+        data.respond_to?(:keys) && (data.keys & EXPECTED_TYPES).any?
+      end
+
+      def record_collection(data)
+        record_type = (data.keys & EXPECTED_TYPES).first
+        data.send(record_type)
       end
 
       def prepare(data)
