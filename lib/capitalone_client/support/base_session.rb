@@ -31,8 +31,6 @@ module CapitalOneClient
         connection.send(*args) { |request| request.params.update Hash(query) }
       end
 
-
-
       def connection
         @connection ||= ::Faraday.new(url: self.class.base_url) do |faraday|
           faraday.request :capitalone_user_agent
