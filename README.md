@@ -22,10 +22,13 @@ And then execute:
 ```ruby
 require 'capitalone_client'
 
+# log into Capital One
+login_result = CapitalOneClient.login(email: 'YOUR_EMAIL', password: 'YOUR_PASSWORD')
+
 # prepare the credentials to be used
 credentials = {
-  user_id:              'USER_ID',
-  authentication_token: 'AUTH_TOKEN',
+  user_id:              login_result.uid,
+  authentication_token: login_result.token,
   api_token:            'API_TOKEN'
 }
 
