@@ -7,16 +7,16 @@ module CapitalOneClient
         @api_token            = api_token
       end
 
-      def base_url(value = nil)
+      def self.base_url(value = nil)
         value.nil? ? @base_url : (@base_url = value)
       end
 
-      def base_path(value = nil)
+      def self.base_path(value = nil)
         value.nil? ? @base_path : (@base_path = value)
       end
 
       def fetch(method, path, data: nil, query: nil, &block)
-        resposne = request(method, path, data: data, query: query)
+        response = request(method, path, data: data, query: query)
         status, data = response.status, response.body
         resource = record_collection?(data) ? data.records : data
         block_given? ? block.call(resource, status, response) : resource
@@ -25,14 +25,15 @@ module CapitalOneClient
       def request(method, path, data: nil, query: nil)
         path = self.class.base_path + path
         args = [method, path]
-        args << data.to_json unless data.nil?
+        args << prepare(data).to_json
         connection.send(*args) { |request| request.params.update Hash(query) }
       end
+
+
 
       def connection
         @connection ||= ::Faraday.new(url: self.class.base_url) do |faraday|
           faraday.request :capitalone_user_agent
-          faraday.request :rest_authentication
           faraday.request :json
 
           faraday.response :mashify
@@ -46,6 +47,18 @@ module CapitalOneClient
 
       def record_collection?(data)
         data.respond_to?(:keys) && data.keys.sort == %w(records total)
+      end
+
+      def prepare(data)
+        data ||= {}
+
+        data[:args] = {
+          :uid        => @user_id,
+          :token      => @authentication_token,
+          'api-token' => @api_token
+        }
+
+        data
       end
     end
   end

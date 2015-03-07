@@ -4,7 +4,6 @@ require 'faraday'
 require 'faraday_middleware'
 require 'json'
 
-require 'capitalone_client/middleware/request/rest_authentication'
 require 'capitalone_client/middleware/request/user_agent'
 require 'capitalone_client/middleware'
 
